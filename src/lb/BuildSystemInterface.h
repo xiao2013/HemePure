@@ -39,6 +39,16 @@ namespace hemelb
     };
 
     /**
+     * LBGK with LES
+     */
+    template<class Lattice>
+    class LBGKLES
+    {
+      public:
+        typedef kernels::LBGKLES<Lattice> Type;
+    };
+
+    /**
      * The entropic implementation by Ansumali et al.
      */
     template<class Lattice>
