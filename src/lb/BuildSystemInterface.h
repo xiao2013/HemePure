@@ -222,6 +222,27 @@ namespace hemelb
     };
 
     /**
+     * The inlet/outlet condition based on the reconstruction of the population: regularised method
+     * links.
+     */
+    template<class Collision>
+    struct REGULARISEDIOLET
+    {
+        typedef typename streamers::RegularisedIolet<Collision>::Type Type;
+    };
+
+    /**
+     * The inlet/outlet condition based on the reconstruction of the population: guozhengshi method
+     * links.
+     */
+    template<class Collision>
+    struct GUOZHENGSHIIOLET
+    {
+        typedef typename streamers::GuoZhengShiIolet<Collision>::Type Type;
+    };
+
+
+    /**
      * The following classes have names corresponding to the options given in the build system for
      * HEMELB_WALL_INLET_BOUNDARY / HEMELB_WALL_OUTLET_BOUNDARY
      */
@@ -253,6 +274,25 @@ namespace hemelb
     {
         typedef typename streamers::LaddIoletSBB<Collision>::Type Type;
     };
+    /**
+     * Regularised in/outlet + SBB
+     */
+    template<class Collision>
+    struct REGULARISEDIOLETSBB
+    {
+        typedef typename streamers::RegularisedIoletSBB<Collision>::Type Type;
+    };
+    
+
+    /**
+     * GZS in/outlet + SBB
+     */
+    template<class Collision>
+    struct GUOZHENGSHIIOLETSBB
+    {
+        typedef typename streamers::GuoZhengShiIoletSBB<Collision>::Type Type;
+    };
+
 
     /**
      * Nash in/outlet + BFL
@@ -282,7 +322,23 @@ namespace hemelb
     {
         typedef typename streamers::LaddIoletBFL<Collision>::Type Type;
     };
+    /**
+     * Regularised in/outlet + BFL
+     */
+    template<class Collision>
+    struct REGULARISEDIOLETBFL
+    {
+        typedef typename streamers::RegularisedIoletBFL<Collision>::Type Type;
+    };
 
+    /**
+     * GZS in/outlet + BFL
+     */
+    template<class Collision>
+    struct GUOZHENGSHIIOLETBFL
+    {
+        typedef typename streamers::GuoZhengShiIoletBFL<Collision>::Type Type;
+    };
     /**
      * Nash in/outlet + GZS
      */
@@ -311,7 +367,14 @@ namespace hemelb
     {
         typedef typename streamers::LaddIoletGZS<Collision>::Type Type;
     };
-
+    /**
+     * Regularised in/outlet + GZS
+     */
+    // template<class Collision>
+    // struct REGULARISEDIOLETGZS
+    // {
+    //     typedef typename streamers::RegularisedIoletGZS<Collision>::Type Type;
+    // };
     /**
      * Nash in/outlet + GZSElastic
      */
@@ -340,6 +403,14 @@ namespace hemelb
     {
         typedef typename streamers::LaddIoletGZSE<Collision>::Type Type;
     };
+    /**
+     * Regularised in/outlet + GZSElastic
+     */
+    // template<class Collision>
+    // struct REGULARISEDIOLETGZSE
+    // {
+    //     typedef typename streamers::RegularisedIoletGZSE<Collision>::Type Type;
+    // };
 
     /**
      * Nash/Krueger in/outlet + SBB

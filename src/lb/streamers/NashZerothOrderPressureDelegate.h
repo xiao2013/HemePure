@@ -49,7 +49,7 @@ namespace hemelb
 							localIOlet->DoPreStreamCoupling(site.GetIndex(), iolet.GetTimeStep(), site.GetGlobalSiteCoords(),
 															hydroVars.density, hydroVars.velocity);
 						}
-
+						
 						// Set the density at the "ghost" site to be the density of the iolet.
 						distribn_t ghostDensity = iolet.GetBoundaryDensity(boundaryId);
 
