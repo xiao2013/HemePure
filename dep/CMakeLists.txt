@@ -198,6 +198,7 @@ ExternalProject_Add(ParMETIS
 # -------------------
 option(CTEMPLATE_PATCH_VACOPY "Define va_copy macro through patch" OFF)
 option(CTEMPLATE_PATCH_ALIGN "Define GTL align macros as gnu" OFF)
+option(CTEMPLATE_PATCH_PYTHON "Patch Generate FSM and FSM Config to use Python3" ON)
 
 message("Building CTEMPLATE")
 
@@ -223,12 +224,18 @@ else()
 	set(PATCH_COMMAND_ALIGN echo noalign)
 endif()
 
+if (CTEMPLATE_PATCH_PYTHON)
+  set(PATCH_COMMAND_PYTHON patch -p1 < ${HEMELB_DEPENDENCIES_PATH}/patches/ctemplate_python3.diff)
+else()
+  set(PATCH_COMMAND_PYTHON echo "no python3 patches" )
+endif()
+
 ExternalProject_Add(CTemplate
 	INSTALL_DIR			${HEMELB_DEPENDENCIES_INSTALL_PATH}
 	URL					${CTEMPLATE_TARBALL}
 	CONFIGURE_COMMAND	<SOURCE_DIR>/configure --prefix=<INSTALL_DIR> ${CTEMPLATE_CONFIGURE_OPTIONS}
 	BUILD_COMMAND		make -j${HEMELB_SUBPROJECT_MAKE_JOBS}
-	PATCH_COMMAND		${PATCH_COMMAND_ALIGN} && ${PATCH_COMMAND_VACOPY}
+	PATCH_COMMAND		${PATCH_COMMAND_ALIGN} && ${PATCH_COMMAND_VACOPY}  && ${PATCH_COMMAND_PYTHON}
 	BUILD_IN_SOURCE		1)
 
 # BOOST
@@ -284,6 +291,34 @@ else()
 		INSTALL_DIR			${HEMELB_DEPENDENCIES_INSTALL_PATH}
 		URL					${ZLIB_TARBALL}
 		CONFIGURE_COMMAND	<SOURCE_DIR>/configure --prefix=<INSTALL_DIR>
+		BUILD_COMMAND		make -j${HEMELB_SUBPROJECT_MAKE_JOBS}
+		BUILD_IN_SOURCE		1)
+endif()
+
+# TIRPC
+# ----
+#https://sourceforge.net/projects/libtirpc/files/libtirpc/1.2.6/libtirpc-1.2.6.tar.bz2
+find_package(TIRPC)
+
+if (TIRPC_FOUND)
+	message("TIRPC already installed, no need to download")
+else()
+	message("TIRPC not installed, will build from source")
+
+	find_file(TIRPC_TARBALL libtirpc-1.2.6.tar.bz2
+		DOC "Path to download TIRPC (can be url http://)"
+		PATHS ${HEMELB_DEPENDENCIES_PATH}/src)
+
+	if(NOT TIRPC_TARBALL)
+		message("No TIRPC source found, will download")
+		set(TIRPC_TARBALL https://sourceforge.net/projects/libtirpc/files/libtirpc/1.2.6/libtirpc-1.2.6.tar.bz2
+			CACHE STRING "Path to download TIRPC (can be local file://)" FORCE)
+	endif()
+
+	ExternalProject_Add(TIRPC
+		INSTALL_DIR			${HEMELB_DEPENDENCIES_INSTALL_PATH}
+		URL					${TIRPC_TARBALL}
+		CONFIGURE_COMMAND	<SOURCE_DIR>/configure --prefix=<INSTALL_DIR> --disable-static --disable-gssapi
 		BUILD_COMMAND		make -j${HEMELB_SUBPROJECT_MAKE_JOBS}
 		BUILD_IN_SOURCE		1)
 endif()
