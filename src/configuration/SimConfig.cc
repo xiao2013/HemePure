@@ -278,6 +278,12 @@ namespace hemelb
 				if (conditionType == "pressure")
 				{
 					newIolet = DoIOForPressureInOutlet(currentIoletNode);
+				}else if (conditionType == "regularisedpressure")
+				{
+					newIolet = DoIOForRegularisedPressureInOutlet(currentIoletNode);
+				}else if (conditionType == "gzspressure")
+				{
+					newIolet = DoIOForGZSPressureInOutlet(currentIoletNode);
 				}
 				else if (conditionType == "yangpressure")
 				{
@@ -286,6 +292,10 @@ namespace hemelb
 				else if (conditionType == "velocity")
 				{
 					newIolet = DoIOForVelocityInOutlet(currentIoletNode);
+				}
+				else if (conditionType == "regularisedvelocity")
+				{
+					newIolet = DoIOForRegularisedVelocityInOutlet(currentIoletNode);
 				}
 				else
 				{
@@ -301,6 +311,72 @@ namespace hemelb
 		{
 			CheckIoletMatchesCMake(ioletEl, "NASHZEROTHORDERPRESSUREIOLET");
 			//CheckIoletMatchesCMake(ioletEl, "NASHZEROTHORDERPRESSUREIOLET_GUOFORCING"); //JM
+			io::xml::Element conditionEl = ioletEl.GetChildOrThrow("condition");
+			const std::string& conditionSubtype = conditionEl.GetAttributeOrThrow("subtype");
+
+			lb::iolets::InOutLet* newIolet = NULL;
+			if (conditionSubtype == "cosine")
+			{
+				newIolet = DoIOForCosinePressureInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "file")
+			{
+				newIolet = DoIOForFilePressureInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "WK")
+			{
+				newIolet = DoIOForWKPressureInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "fileWK")
+			{
+				newIolet = DoIOForFileWKPressureInOutlet(ioletEl);
+			}
+			else
+			{
+				throw Exception() << "Invalid boundary condition subtype '" << conditionSubtype << "' in "
+					<< ioletEl.GetPath();
+			}
+
+			return newIolet;
+		}
+
+		lb::iolets::InOutLet* SimConfig::DoIOForRegularisedPressureInOutlet(const io::xml::Element& ioletEl)
+		{
+			CheckIoletMatchesCMake(ioletEl, "REGULARISEDIOLET");
+			
+			io::xml::Element conditionEl = ioletEl.GetChildOrThrow("condition");
+			const std::string& conditionSubtype = conditionEl.GetAttributeOrThrow("subtype");
+
+			lb::iolets::InOutLet* newIolet = NULL;
+			if (conditionSubtype == "cosine")
+			{
+				newIolet = DoIOForCosinePressureInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "file")
+			{
+				newIolet = DoIOForFilePressureInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "WK")
+			{
+				newIolet = DoIOForWKPressureInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "fileWK")
+			{
+				newIolet = DoIOForFileWKPressureInOutlet(ioletEl);
+			}
+			else
+			{
+				throw Exception() << "Invalid boundary condition subtype '" << conditionSubtype << "' in "
+					<< ioletEl.GetPath();
+			}
+
+			return newIolet;
+		}
+
+		lb::iolets::InOutLet* SimConfig::DoIOForGZSPressureInOutlet(const io::xml::Element& ioletEl)
+		{
+			CheckIoletMatchesCMake(ioletEl, "GUOZHENGSHIIOLET");
+			
 			io::xml::Element conditionEl = ioletEl.GetChildOrThrow("condition");
 			const std::string& conditionSubtype = conditionEl.GetAttributeOrThrow("subtype");
 
@@ -366,6 +442,38 @@ namespace hemelb
 		{
 			CheckIoletMatchesCMake(ioletEl, "LADDIOLET");
 			//CheckIoletMatchesCMake(ioletEl, "LADDIOLET_GUOFORCING"); //JM
+			io::xml::Element conditionEl = ioletEl.GetChildOrThrow("condition");
+			const std::string& conditionSubtype = conditionEl.GetAttributeOrThrow("subtype");
+
+			lb::iolets::InOutLet* newIolet = NULL;
+			if (conditionSubtype == "parabolic")
+			{
+				newIolet = DoIOForParabolicVelocityInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "womersley")
+			{
+				newIolet = DoIOForWomersleyVelocityInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "womersleyElastic")
+			{
+				newIolet = DoIOForWomersleyElasticVelocityInOutlet(ioletEl);
+			}
+			else if (conditionSubtype == "file")
+			{
+				newIolet = DoIOForFileVelocityInOutlet(ioletEl);
+			}
+			else
+			{
+				throw Exception() << "Invalid boundary condition subtype '" << conditionSubtype << "' in "
+					<< ioletEl.GetPath();
+			}
+
+			return newIolet;
+		}
+		lb::iolets::InOutLet* SimConfig::DoIOForRegularisedVelocityInOutlet(const io::xml::Element& ioletEl)
+		{
+			CheckIoletMatchesCMake(ioletEl, "REGULARISEDIOLET");
+			
 			io::xml::Element conditionEl = ioletEl.GetChildOrThrow("condition");
 			const std::string& conditionSubtype = conditionEl.GetAttributeOrThrow("subtype");
 
