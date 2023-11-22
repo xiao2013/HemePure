@@ -46,6 +46,16 @@ namespace hemelb
     {
       public:
         typedef kernels::LBGKLES<Lattice> Type;
+    }
+    
+    /**
+     * LBGK with viscous sponge layer
+     */
+    template<class Lattice>
+    class LBGKSL
+    {
+      public:
+        typedef kernels::LBGKSpongeLayer<Lattice> Type;
     };
 
     /**

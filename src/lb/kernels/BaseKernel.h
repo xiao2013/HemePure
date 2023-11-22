@@ -54,6 +54,7 @@ namespace hemelb
 					template<class LatticeImpl> friend class LBGK;
 					template<class LatticeImpl> friend class LBGKLES;
 					template<class rheologyModel, class LatticeImpl> friend class LBGKNN;
+					template<class LatticeImpl> friend class LBGKSpongeLayer;
 					template<class LatticeImpl> friend class MRT;
 					template<class LatticeImpl> friend class TRT;
 
@@ -170,6 +171,9 @@ namespace hemelb
 
 					// The array with the imposed density at each boundary.
 					iolets::BoundaryValues* boundaryObject;
+
+					// Vector of outlet positions.
+					std::vector<LatticePosition> outletPositions;
 
 					// The lattice data object. Currently only used for accessing the boundary id
 					// of each site next to an inlet or an outlet.
