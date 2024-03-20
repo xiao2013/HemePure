@@ -39,11 +39,11 @@ set(HEMELB_DEPENDENCIES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../dep/"
 set(HEMELB_DEPENDENCIES_INSTALL_PATH "${HEMELB_DEPENDENCIES_PATH}/install"
 	CACHE FILEPATH "path to find dependency includes and libraries")
 set(HEMELB_OPTIMISATION "-O3"
-	CACHE STRING "optimisation level: <blank> or -O1 to -O4)")
+	CACHE STRING "optimisation level: <blank> or -O1 to -O4")
 set(HEMELB_LATTICE "D3Q19"
 	CACHE STRING "lattice type: 'D3Q15','D3Q19','D3Q27','D3Q15i'")
 set(HEMELB_KERNEL "LBGK"
-	CACHE STRING "kernel: 'LBGK','EntropicAnsumali','EntropicChik','MRT','TRT','LBGKLES','NNCY','NNCYMOUSE','NNC','NNTPL', 'LBGKSL'")
+	CACHE STRING "kernel: 'LBGK','EntropicAnsumali','EntropicChik','MRT','TRT','LBGKLES','NNCY','NNCYMOUSE','NNC','NNTPL', 'LBGKSL', 'LBGKLESSL'")
 set(HEMELB_WALL_BOUNDARY "BFL"
 	CACHE STRING "boundary conditions to be used at the walls: 'BFL','GZS','SIMPLEBOUNCEBACK','JUNKYANG'")
 set(HEMELB_INLET_BOUNDARY "NASHZEROTHORDERPRESSUREIOLET"
