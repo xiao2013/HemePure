@@ -65,7 +65,7 @@ namespace hemelb
     class LBGKLESSL
     {
       public:
-        typedef kernels::LBGKSpongeLayer<Lattice> Type;
+        typedef kernels::LBGKLESSpongeLayer<Lattice> Type;
     };
 
     /**

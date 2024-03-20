@@ -18,20 +18,20 @@ namespace hemelb
 		namespace kernels
 		{
 			/**
-			 * LBGKSpongeLayer: This class implements the LBGK single-relaxation time kernel with a viscous sponge layer.
+			 * LBGKLESSpongeLayer: This class implements the LBGK single-relaxation time kernel with a viscous sponge layer.
 			 */
 			template<class LatticeType>
-				class LBGKSpongeLayer : public BaseKernel<LBGKSpongeLayer<LatticeType>, LatticeType>
+				class LBGKLESSpongeLayer : public BaseKernel<LBGKLESSpongeLayer<LatticeType>, LatticeType>
 			{
 				public:
-					LBGKSpongeLayer(InitParams& initParams) :
+					LBGKLESSpongeLayer(InitParams& initParams) :
 						tau0(initParams.lbmParams->GetTau()), vRatio(initParams.lbmParams->ViscosityRatio),
 						lifetime(initParams.lbmParams->SpongeLayerLifetime), state(initParams.state)
 					{
 						InitState(initParams);
 					}
 
-					inline void DoCalculateDensityMomentumFeq(HydroVars<LBGKSpongeLayer<LatticeType> >& hydroVars, site_t index)
+					inline void DoCalculateDensityMomentumFeq(HydroVars<LBGKLESSpongeLayer<LatticeType> >& hydroVars, site_t index)
 					{
 						LatticeType::CalculateDensityMomentumFEq(hydroVars.f,
 								hydroVars.density,
@@ -51,7 +51,7 @@ namespace hemelb
 						CalculateTau(hydroVars, index);
 					}
 
-					inline void DoCalculateFeq(HydroVars<LBGKSpongeLayer>& hydroVars, site_t index)
+					inline void DoCalculateFeq(HydroVars<LBGKLESSpongeLayer>& hydroVars, site_t index)
 					{
 						LatticeType::CalculateFeq(hydroVars.density,
 								hydroVars.momentum.x,
@@ -67,7 +67,7 @@ namespace hemelb
 						CalculateTau(hydroVars, index);
 					}
 
-					inline void DoCollide(const LbmParameters* const lbmParams, HydroVars<LBGKSpongeLayer>& hydroVars)
+					inline void DoCollide(const LbmParameters* const lbmParams, HydroVars<LBGKLESSpongeLayer>& hydroVars)
 					{
 						distribn_t omega = - 1.0 / hydroVars.tau;
 
@@ -138,7 +138,7 @@ namespace hemelb
 					* Calculate the relaxation time of the collision and temporaily store it in hydroVars.
 					* The sponge layer is maintained for a certain time and then dissolved.
 					*/
-					inline void CalculateTau(HydroVars<LBGKSpongeLayer<LatticeType> >& hydroVars, site_t index)
+					inline void CalculateTau(HydroVars<LBGKLESSpongeLayer<LatticeType> >& hydroVars, site_t index)
 					{
 						LatticeTimeStep timeStep = state->GetTimeStep();
 						double tau_les = compute_tau_smagorinsky(hydroVars);
@@ -159,7 +159,7 @@ namespace hemelb
 						}
 					}
 
-					double compute_tau_smagorinsky(HydroVars<LBGKSpongeLayer<LatticeType> >& hydroVars) const
+					double compute_tau_smagorinsky(HydroVars<LBGKLESSpongeLayer<LatticeType> >& hydroVars) const
 					{
 						// calculate tau using smagorinsky local correction
 						double dx = 1.0;
